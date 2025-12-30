@@ -1,0 +1,7 @@
+# Ignorar el archivo de variables de entorno dentro de Backend
+Backend/.env
+
+# Ignorar archivos temporales y caché de Python
+Backend/__pycache__/
+Backend/temp_files/
+*.pyc

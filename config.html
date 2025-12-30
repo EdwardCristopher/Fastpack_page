@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuración | Fastpack 2025</title>
+    
+    <script>
+        // Bloqueo de seguridad: Solo ADMIN puede ver esta página
+        if (localStorage.getItem('fastpack_rol') !== 'admin') {
+            window.location.href = 'index.html';
+        }
+    </script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-slate-50 text-slate-900">
+
+    <nav class="nav-custom py-4 shadow-xl sticky top-0 z-50">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <div class="flex items-center gap-4">
+                <button onclick="window.location.href='index.html'" class="text-white hover:text-blue-400 transition-colors">
+                    <i class="fas fa-arrow-left"></i> Volver al Portal
+                </button>
+                <h1 class="text-white font-black uppercase tracking-tighter text-xl border-l border-white/20 pl-4">
+                    Panel de <span class="text-blue-500">Configuración</span>
+                </h1>
+            </div>
+            <div class="flex items-center gap-4">
+                <span class="texto-infraestructura">Fastpack 2025</span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto py-10 px-6">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <div class="lg:col-span-2 space-y-8">
+                <section class="bg-white p-8 rounded-[2rem] shadow-sm border border-slate-200">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-xl font-bold flex items-center gap-3 text-black">
+                            <i class="fas fa-folder-open text-blue-600"></i> Gestión de Manuales y Tutoriales
+                        </h2>
+                        <span class="text-[9px] font-black bg-orange-100 text-orange-600 px-3 py-1 rounded-full uppercase">Manuales Base Protegidos</span>
+                    </div>
+
+                    <div class="overflow-hidden rounded-xl border border-slate-100">
+                        <table class="w-full text-left text-sm">
+                            <thead class="bg-slate-50 text-slate-500 uppercase text-[10px] font-bold">
+                                <tr>
+                                    <th class="p-4">Título / Categoría</th>
+                                    <th class="p-4">Descripción</th>
+                                    <th class="p-4 text-right">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="lista-tutoriales-admin" class="text-black bg-white">
+                                </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section class="bg-white p-8 rounded-[2rem] shadow-sm border border-slate-200">
+                    <h2 class="text-xl font-bold mb-6 flex items-center gap-3 text-black">
+                        <i class="fas fa-history text-blue-600"></i> Historial de Registros
+                    </h2>
+                    <div class="overflow-hidden rounded-xl border border-slate-100">
+                        <table class="w-full text-left text-sm">
+                            <thead class="bg-slate-50 text-slate-500 uppercase text-[10px] font-bold">
+                                <tr>
+                                    <th class="p-4">Usuario</th>
+                                    <th class="p-4">Acción</th>
+                                    <th class="p-4">Fecha</th>
+                                </tr>
+                            </thead>
+                            <tbody id="historial-body" class="text-black">
+                                </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+
+            <aside class="space-y-8">
+                <div class="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-200">
+                    <h2 class="text-lg font-bold mb-4 flex items-center gap-3 text-black">
+                        <i class="fas fa-user-shield text-blue-600"></i> Gestión de Usuarios
+                    </h2>
+                    <div id="lista-usuarios-admin" class="space-y-4">
+                        </div>
+                </div>
+            </aside>
+
+        </div>
+    </main>
+
+    <div id="modal-edit-user" class="hidden fixed inset-0 bg-black/80 backdrop-blur-md z-[100] flex items-center justify-center p-4">
+        <div class="bg-white border border-slate-200 p-8 rounded-[2rem] w-full max-w-lg shadow-2xl">
+            <div class="flex justify-between items-start mb-6">
+                <h3 class="text-2xl font-black text-black uppercase tracking-tighter">
+                    Ajustes de <span class="text-blue-500">Perfil</span>
+                </h3>
+                <span id="display-username" class="text-[10px] font-mono bg-slate-100 px-3 py-1 rounded-full text-slate-500 uppercase">ID: ---</span>
+            </div>
+            
+            <form id="form-edit-user" class="space-y-4">
+                <input type="hidden" id="edit-user-id">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-[10px] font-bold uppercase text-slate-400 ml-2">Nombre Completo</label>
+                        <input type="text" id="edit-user-nombre" class="w-full p-3 rounded-xl border border-slate-200 outline-none text-black font-medium focus:ring-2 focus:ring-blue-500" required>
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-bold uppercase text-slate-400 ml-2">Contraseña</label>
+                        <input type="password" id="edit-user-pass" class="w-full p-3 rounded-xl border border-slate-200 outline-none text-black focus:ring-2 focus:ring-blue-500" placeholder="Nueva contraseña">
+                    </div>
+                </div>
+
+                <div class="bg-slate-50 p-6 rounded-2xl space-y-4 border border-slate-100">
+                    <p class="text-[11px] font-black uppercase text-blue-600 mb-2 border-b border-blue-100 pb-2 flex items-center gap-2">
+                        <i class="fas fa-key text-[9px]"></i> Control de Permisos
+                    </p>
+                    
+                    <label class="flex items-center gap-3 cursor-pointer group">
+                        <input type="checkbox" id="perm-suppliers" class="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500">
+                        <span class="text-sm text-slate-700 group-hover:text-black transition-colors font-medium">Permitir cambios en lista de proveedores</span>
+                    </label>
+
+                    <label class="flex items-center gap-3 cursor-pointer group">
+                        <input type="checkbox" id="perm-upload" class="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500">
+                        <span class="text-sm text-slate-700 group-hover:text-black transition-colors font-medium">Permitir subir archivos y multimedia</span>
+                    </label>
+                    <label class="flex items-center gap-3 cursor-pointer group">
+                        <input type="checkbox" id="perm-update" class="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500">
+                        <span class="text-sm text-slate-700 group-hover:text-black transition-colors font-medium">Permitir actualizar multimedia</span>
+                    </label>
+                </div>
+
+                <div class="flex flex-col gap-4 mt-6">
+                    <div class="flex gap-3">
+                        <button type="button" onclick="cerrarModalUser()" class="flex-1 py-3 text-slate-500 font-bold uppercase text-[10px] tracking-widest hover:text-slate-800 transition-colors">Cancelar</button>
+                        <button type="submit" class="flex-1 bg-blue-600 text-white py-3 rounded-xl font-bold uppercase text-[10px] tracking-widest hover:bg-blue-700 transition-all shadow-lg shadow-blue-200">
+                            Guardar Cambios
+                        </button>
+                    </div>
+                    <button type="button" onclick="eliminarPerfilUsuario()" class="w-full py-2 text-red-500 font-bold uppercase text-[9px] tracking-[0.2em] hover:bg-red-50 rounded-lg transition-colors border border-transparent hover:border-red-100 flex items-center justify-center gap-2">
+                        <i class="fas fa-user-times text-xs"></i> Eliminar Perfil Permanentemente
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-edit-tuto" class="hidden fixed inset-0 bg-black/80 backdrop-blur-md z-[100] flex items-center justify-center p-4">
+        <div class="bg-white border border-slate-200 p-8 rounded-[2rem] w-full max-w-md shadow-2xl">
+            <h3 class="text-2xl font-black text-black uppercase tracking-tighter mb-6">
+                Editar <span class="text-blue-500">Contenido</span>
+            </h3>
+            <form id="form-edit-tuto" class="space-y-4">
+                <input type="hidden" id="edit-tuto-id">
+                <div>
+                    <label class="text-[10px] font-bold uppercase text-slate-400">Título del Manual</label>
+                    <input type="text" id="edit-tuto-titulo" class="w-full p-3 rounded-xl border border-slate-200 outline-none text-black font-medium focus:ring-2 focus:ring-blue-500" required>
+                </div>
+                <div>
+                    <label class="text-[10px] font-bold uppercase text-slate-400">Descripción Breve</label>
+                    <textarea id="edit-tuto-desc" class="w-full p-3 rounded-xl border border-slate-200 outline-none text-black h-24 focus:ring-2 focus:ring-blue-500" placeholder="Explica brevemente de qué trata este manual..."></textarea>
+                </div>
+                <div class="flex gap-3 mt-6">
+                    <button type="button" onclick="cerrarModalTuto()" class="flex-1 py-3 text-slate-500 font-bold uppercase text-[10px] hover:text-black transition-colors">Cancelar</button>
+                    <button type="submit" class="flex-1 bg-blue-600 text-white py-3 rounded-xl font-bold uppercase text-[10px] hover:bg-blue-700 transition-all shadow-lg">Actualizar Datos</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="config.js"></script>
+</body>
+</html>

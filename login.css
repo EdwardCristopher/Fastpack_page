@@ -1,0 +1,100 @@
+/* --- CONFIGURACIÓN DE LOGIN FASTPACK (MODO CLARO PROFESIONAL) --- */
+:root {
+    --azul-fastpack: #2563eb;
+    --azul-soft: rgba(37, 99, 235, 0.1);
+    --gris-borde: #e5e7eb;
+    --texto-principal: #111827;
+}
+
+/* Fondo blanco con efecto de viñeta (oscurecimiento en bordes) */
+/* Corrección del bloque body */
+body {
+    background: radial-gradient(circle, #ffffff 0%, #f3f4f6 60%, #111827 180%);
+    background-attachment: fixed;
+    margin: 0;
+    font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh; /* Aquí estaba el error */
+}
+/* Tarjeta con animación de entrada suave */
+.login-card {
+    background: #ffffff;
+    border: 1px solid var(--gris-borde);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    padding: 2.5rem;
+    border-radius: 1.5rem;
+    width: 100%;
+    max-width: 420px;
+    animation: slideUp 0.6s ease-out;
+}
+
+/* Inputs con estilo moderno */
+.neon-input {
+    width: 100%;
+    background-color: #f9fafb;
+    border: 2px solid var(--gris-borde);
+    border-radius: 0.75rem;
+    padding: 0.8rem 1rem 0.8rem 2.75rem;
+    color: var(--texto-principal);
+    font-size: 0.95rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.neon-input:focus {
+    background-color: #ffffff;
+    border-color: var(--azul-fastpack);
+    box-shadow: 0 0 0 4px var(--azul-soft);
+    outline: none;
+}
+
+/* Botón con animación de escala */
+.btn-ingresar {
+    width: 100%;
+    background-color: var(--azul-fastpack);
+    color: white;
+    font-weight: 700;
+    padding: 1rem;
+    border-radius: 0.75rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
+}
+
+.btn-ingresar:hover {
+    background-color: #1d4ed8;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
+}
+
+.btn-ingresar:active {
+    transform: scale(0.98);
+}
+
+/* Keyframes para la animación de entrada */
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Estilo para el mensaje de error */
+#errorMessage {
+    background-color: #fef2f2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    margin-top: 1rem;
+    text-align: center;
+    font-size: 0.875rem;
+}

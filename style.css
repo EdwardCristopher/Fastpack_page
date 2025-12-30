@@ -1,0 +1,360 @@
+.hidden {
+    display: none !important;
+}
+
+:root {
+    --bg-principal: #ffffff;
+    --border-card: #e2e8f0;
+    --texto-negro: #000000;
+    --texto-gris: #475569;
+    --azul-fastpack: #0f172a; 
+    --azul-link: #2563eb;
+    --naranja-vibrante: #fdba74;
+    --azul-vibrante: #93c5fd;
+    --naranja-fastpack: #f97316;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    background-color: #f8fafc;
+}
+
+/* --- 1. PANEL SUPERIOR --- */
+.nav-custom { 
+    background-color: var(--azul-fastpack) !important;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+.nav-title { color: #ffffff !important; font-weight: 800; }
+
+.nav-custom .text-blue-500 {
+    color: #3b82f6 !important; 
+    display: block !important;
+    opacity: 1 !important;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+/* ESTILOS PARA LOS SEPARADORES VERTICALES */
+.separador-v {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+    width: 1px !important;
+    height: 24px !important;
+    margin: 0 10px;
+    display: block !important;
+}
+
+.texto-infraestructura {
+    color: #3b82f6 !important;
+    font-size: 10px !important;
+    font-family: ui-monospace, monospace !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.2em !important;
+    font-weight: 700;
+    padding: 0 5px;
+}
+
+/* EFECTO RESALTE AZUL PARA EL LOGO */
+.logo-link img {
+    transition: all 0.3s ease;
+    filter: drop-shadow(0 0 0 rgba(59, 130, 246, 0));
+}
+
+.logo-link:hover img {
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.6));
+}
+
+/* --- 2. FONDOS INDEPENDIENTES --- */
+#vista-proveedores {
+    min-height: 100vh;
+    width: 100%;
+    background: linear-gradient(-45deg, #ffffff, var(--azul-vibrante), #ffffff, var(--naranja-vibrante), #ffffff);
+    background-size: 400% 400%;
+    animation: fluidGradient 10s ease infinite;
+    padding: 2rem 1rem;
+}
+
+#vista-proveedores h2 { color: var(--texto-negro) !important; }
+#vista-proveedores p.text-zinc-500 { color: #334155 !important; }
+
+#vista-tutoriales, #vista-conversor {
+    min-height: 100vh;
+    width: 100%;
+    background: #f1f5f9;
+    padding: 2rem 1rem;
+}
+
+/* --- 3. BUSCADORES (INTACTOS) --- */
+.input-search, #buscador, #buscador-proveedores {
+    color: #000000 !important;
+    -webkit-text-fill-color: #000000 !important;
+    background-color: #ffffff !important;
+    border: 1px solid var(--border-card) !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+/* --- 4. SECCIÓN DE MANUALES --- */
+#contenedor-tutoriales {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 0.8rem; 
+    justify-items: center;
+    max-width: 950px; 
+    margin: 0 auto;
+}
+
+@media (max-width: 900px) {
+    #contenedor-tutoriales { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+}
+
+.word-card { 
+    background: #ffffff !important; 
+    border: 1px solid var(--border-card); 
+    padding: 12px; 
+    border-radius: 12px; 
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 100%;
+    max-width: 270px; 
+    min-height: 190px; 
+    position: relative;
+    overflow: hidden;
+}
+
+.word-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--naranja-fastpack);
+    box-shadow: 0 10px 20px -5px rgba(249, 115, 22, 0.15);
+    min-height: 240px; 
+}
+
+.category-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: #1f2937;
+    color: #ffffff;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 8px;
+    font-weight: 800;
+    text-transform: uppercase;
+    z-index: 10;
+}
+
+.word-icon { 
+    width: 28px; 
+    height: 28px; 
+    object-fit: contain; 
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.word-card h3 { 
+    color: var(--texto-negro) !important; 
+    font-weight: 800; 
+    margin: 25px 0 4px 0; 
+    font-size: 0.85rem; 
+    text-align: left;
+}
+
+.word-card p { 
+    color: var(--texto-gris) !important; 
+    font-size: 0.75rem; 
+    line-height: 1.2; 
+    margin-bottom: 15px;
+    text-align: left;
+    opacity: 0.8;
+}
+
+.btn-download {
+    background: var(--azul-fastpack); 
+    color: white !important;
+    text-align: center;
+    padding: 8px;
+    border-radius: 8px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    margin-top: auto;
+    opacity: 0; 
+}
+
+.word-card:hover .btn-download {
+    opacity: 1;
+    background-color: var(--naranja-fastpack);
+}
+
+/* --- 5. TABLA DE PROVEEDORES --- */
+.table-header-custom { background: var(--azul-fastpack) !important; border-radius: 12px; margin-bottom: 1rem; }
+.supplier-row { background: #ffffff !important; border: 1px solid var(--border-card) !important; border-radius: 12px; margin-bottom: 0.75rem !important; box-shadow: 0 4px 6px rgba(0,0,0,0.02); transition: transform 0.2s ease, border-color 0.2s ease; }
+.supplier-row:hover { border-color: var(--azul-link) !important; }
+
+.celda-empresa { 
+    color: #000000 !important; 
+    -webkit-text-fill-color: #000000 !important; 
+    font-weight: 500 !important; 
+    font-size: 0.95rem; 
+}
+
+.celda-servicio, .celda-contacto { color: var(--texto-gris) !important; }
+.celda-info { 
+    color: var(--azul-link) !important; 
+    background: rgba(37, 99, 235, 0.08) !important; 
+    border: 1px solid rgba(37, 99, 235, 0.1) !important; 
+    padding: 5px 10px; 
+    border-radius: 8px; 
+    font-weight: 600; 
+}
+
+/* --- 6. MODO ELIMINACIÓN --- */
+.btn-eliminar-fila { display: none !important; position: absolute; left: -40px; top: 50%; transform: translateY(-50%); color: #ef4444; }
+.modo-borrar .btn-eliminar-fila { display: flex !important; }
+.modo-borrar .supplier-row { transform: translateX(35px); }
+
+/* --- 7. ESTATUS --- */
+.status-badge { position: relative; padding-left: 1.6rem !important; display: flex; align-items: center; color: #1e293b !important; font-weight: 700; font-size: 11px; }
+.status-badge::before { content: ''; position: absolute; left: 0.5rem; width: 10px; height: 10px; border-radius: 50%; }
+.status-active::before { background-color: #10b981 !important; box-shadow: 0 0 8px #10b981; }
+.status-pending::before { background-color: #f59e0b !important; box-shadow: 0 0 8px #f59e0b; }
+
+/* --- 8. ANIMACIONES --- */
+#btnAccionesCrud svg { transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); display: inline-block; }
+#btnAccionesCrud:hover svg { transform: rotate(90deg); }
+
+@keyframes fluidGradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.toast-card { 
+    background: #0f172a !important; 
+    border: 1px solid var(--azul-link); 
+    padding: 12px 24px; 
+    border-radius: 12px; 
+    color: #ffffff !important; 
+}
+
+/* --- 9. VISTA CONVERTIDOR --- */
+#vista-conversor h2 { color: var(--texto-negro) !important; }
+#vista-conversor p { color: var(--texto-negro) !important; }
+#vista-conversor label[for="archivoInput"] span { color: #ffffff !important; transition: all 0.3s ease; }
+
+#tipoConversion {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1.5rem center; 
+    background-size: 1.2rem;
+    padding-right: 3rem;
+}
+
+#vista-conversor label[for="archivoInput"]:hover {
+    border-color: var(--naranja-fastpack) !important;
+    background-color: rgba(249, 115, 22, 0.05);
+}
+
+#vista-conversor label[for="archivoInput"]:hover svg,
+#vista-conversor label[for="archivoInput"]:hover span {
+    color: var(--naranja-fastpack) !important;
+}
+
+#vista-conversor #btnAccion {
+    background: var(--azul-link) !important;
+    color: white !important;
+    opacity: 1 !important; 
+    display: block !important;
+    width: 100%;
+    padding: 14px;
+    border-radius: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+#vista-conversor #btnAccion:hover {
+    background-color: var(--naranja-fastpack) !important;
+    box-shadow: 0 4px 15px rgba(249, 115, 22, 0.3);
+}
+
+/* --- 10. ESTILOS PARA ALERTAS Y CIERRE DE SESIÓN --- */
+.swal2-popup {
+    background: #ffffff !important;
+    border-radius: 24px !important;
+    padding: 2rem !important;
+    border: 1px solid var(--border-card) !important;
+}
+
+.swal2-title {
+    color: var(--texto-negro) !important;
+    font-size: 1.5rem !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+    letter-spacing: -0.02em !important;
+}
+
+.swal2-confirm {
+    background-color: var(--azul-fastpack) !important;
+    border-radius: 12px !important;
+}
+
+.swal2-backdrop-show {
+    backdrop-filter: blur(8px);
+    background: rgba(15, 23, 42, 0.6) !important;
+}
+
+/* --- 11. BOTÓN FLOTANTE DE TUTORIALES --- */
+#tutorial-actions-main {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    right: 2rem !important;
+    left: auto !important;
+    bottom: 2rem !important;
+    position: fixed;
+}
+
+#tutorial-actions-main button {
+    background-color: var(--azul-link) !important;
+    box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.4);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+#tutorial-actions-main button:hover {
+    background-color: var(--naranja-fastpack) !important;
+    transform: scale(1.1) rotate(5deg);
+}
+
+/* --- 12. DIFERENCIACIÓN DE BOTONES FLOTANTES (CORREGIDO A ARRIBA IZQUIERDA) --- */
+
+/* Mover el engranaje (CRUD) al extremo superior izquierdo */
+#btnAccionesCrud {
+    left: 2rem !important;
+    right: auto !important;
+    top: 6rem !important; /* Ajustado debajo del nav bar */
+    bottom: auto !important;
+    background-color: #334155 !important;
+    position: fixed;
+    z-index: 40;
+}
+
+/* Ajustar el menú para que baje desde el engranaje */
+#menu-crud {
+    left: 2rem !important;
+    right: auto !important;
+    top: 10rem !important; /* Aparece debajo del botón principal */
+    bottom: auto !important;
+    position: fixed;
+    z-index: 40;
+}
