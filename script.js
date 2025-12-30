@@ -434,7 +434,7 @@ function setFiltro(valor) {
     filtrarProveedores();
 }
 
-// --- FUNCIÓN DE CONVERSIÓN ---
+// --- FUNCIÓN DE CONVERSIÓN ACTUALIZADA PARA LA NUBE ---
 async function iniciarConversion() {
     const tipo = document.getElementById('tipoConversion').value;
     const loader = document.getElementById('loader');
@@ -447,33 +447,58 @@ async function iniciarConversion() {
 
     loader.classList.remove('hidden');
     btn.disabled = true;
+
     const formData = new FormData();
     formData.append('file', archivoInput.files[0]);
+
+    // DEFINICIÓN DE ENDPOINTS UNIFICADOS
     const endpoint = tipo === 'pdf-to-word' ? 'convertir-pdf-a-word' : 'convertir-word-a-pdf';
     
+    // Determinamos la URL base (Usa la de config.js o la de Railway directamente)
+    // Importante: Aquí usamos la ruta /api/converter que definiremos en main.py
+   const BASE_CONVERTER_URL = window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost"
+    ? "http://127.0.0.1:8001/api/converter" 
+    : "https://fastpackpage-production.up.railway.app/api/converter";
+
     try {
-        const response = await fetch(`http://127.0.0.1:8000/${endpoint}`, { method: 'POST', body: formData });
-        if (!response.ok) throw new Error("Error en el servidor");
+        // Ahora el fetch apunta al punto de entrada unificado
+        const response = await fetch(`${BASE_CONVERTER_URL}/${endpoint}`, { 
+            method: 'POST', 
+            body: formData 
+        });
+
+        if (!response.ok) throw new Error("Error en la conversión");
+
         const blob = await response.blob();
         const url = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
+
+        // Mantenemos tu lógica de nombre de archivo
         const extension = tipo === 'pdf-to-word' ? 'docx' : 'pdf';
         link.setAttribute('download', `Fastpack_Doc_${Date.now()}.${extension}`);
+
         document.body.appendChild(link);
         link.click();
-        setTimeout(() => { window.URL.revokeObjectURL(url); link.remove(); }, 100);
+        
+        setTimeout(() => { 
+            window.URL.revokeObjectURL(url); 
+            link.remove(); 
+        }, 100);
+
         mostrarAnuncio("¡Conversión exitosa!");
         archivoInput.value = "";
         fileNameSpan.textContent = "Seleccionar archivo...";
+
     } catch (error) {
-        mostrarAnuncio("Error: Servidor inactivo (Puerto 8000)", "error");
+        // Mensaje actualizado para ser más descriptivo
+        mostrarAnuncio("Error: No se pudo conectar con el servicio de conversión", "error");
+        console.error("Detalle del error:", error);
     } finally {
         loader.classList.add('hidden');
         btn.disabled = false;
     }
 }
-
 // --- INICIALIZACIÓN Y EVENTOS ---
 document.addEventListener('DOMContentLoaded', () => {
     inicializarIdentidad();

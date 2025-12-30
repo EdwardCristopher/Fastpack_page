@@ -11,7 +11,7 @@ const tutorialesBase = [
 // CONFIGURACIÓN DINÁMICA DE URL
 const API_BASE_URL = window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost"
     ? "http://127.0.0.1:8001/api/auth" 
-    : `${window.location.origin}/api/auth`;
+    : "https://fastpackpage-production.up.railway.app/api/auth";
 
 // --- CONFIGURACIÓN DE SEGURIDAD ROOT (WHITELIST) ---
 const SUPER_ADMINS = ["amureira", "sgomez", "sbasai"];
