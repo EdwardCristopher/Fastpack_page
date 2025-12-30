@@ -15,13 +15,15 @@ from typing import Optional, List
 env_path = Path('.') / '.env'
 load_dotenv(dotenv_path=env_path, encoding='utf-8')
 
+# CORRECCIÓN 1: El nombre debe ser auth_app para que main.py lo encuentre
 auth_app = FastAPI()
 
 # --- CONFIGURACIÓN DE SEGURIDAD ROOT ---
 SUPER_ADMINS = ["amureira", "sgomez", "sbasai"]
 
-# --- CONFIGURACIÓN PARA SERVIR VIDEOS Y DOCUMENTOS ---
-auth_app.mount("/assets", StaticFiles(directory="assets"), name="assets")
+# CORRECCIÓN 2: Comentamos el mount de assets. 
+# Ahora main.py se encarga de servir los archivos para todo el sistema.
+# auth_app.mount("/assets", StaticFiles(directory="assets"), name="assets")
 
 auth_app.add_middleware(
     CORSMiddleware,
@@ -30,8 +32,10 @@ auth_app.add_middleware(
     allow_headers=["*"],
 )
 
-# Definir la ruta física donde se guardarán los archivos
-UPLOAD_DIR = Path("assets/docs")
+# CORRECCIÓN 3: Ruta absoluta para UPLOAD_DIR. 
+# Esto evita que Railway se pierda al buscar la carpeta assets.
+BASE_DIR = Path(__file__).resolve().parent.parent
+UPLOAD_DIR = BASE_DIR / "assets" / "docs"
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
 # --- MODELOS DE DATOS ---
@@ -57,7 +61,6 @@ class UserUpdateRequest(BaseModel):
     perm_renombrar: bool
     operador_id: str
 
-# Modelo para actualizar la información del manual
 class TutorialUpdate(BaseModel):
     titulo: str
     descripcion: str
@@ -113,7 +116,6 @@ async def login(credentials: LoginRequest):
     finally:
         if conn: conn.close()
 
-# --- RUTA DE REGISTRO DE USUARIOS ---
 @auth_app.post("/register")
 async def register(user: RegisterRequest):
     if user.token != "FP2025":
@@ -123,8 +125,6 @@ async def register(user: RegisterRequest):
     try:
         conn = get_db_connection()
         cur = conn.cursor()
-        
-        # Verificar si el usuario ya existe
         cur.execute("SELECT id FROM usuarios WHERE username = %s", (user.username.lower(),))
         if cur.fetchone():
             raise HTTPException(status_code=400, detail="El nombre de usuario ya está registrado")
@@ -172,16 +172,13 @@ async def subir_tutorial(
 ):
     conn = None
     try:
-        # 1. Guardar el archivo físicamente en el disco
         file_path = UPLOAD_DIR / file.filename
         with file_path.open("wb") as buffer:
             shutil.copyfileobj(file.file, buffer)
 
-        # 2. Detectar tipo automáticamente
         enlace = file.filename
         tipo_detectado = "video" if enlace.lower().endswith('.mp4') else "archivo"
 
-        # 3. Conectar a DB para registrar el tutorial
         conn = get_db_connection()
         cur = conn.cursor()
         
@@ -206,15 +203,12 @@ async def subir_tutorial(
     finally:
         if conn: conn.close()
 
-# RUTA PARA ACTUALIZAR INFORMACIÓN DE MANUALES
 @auth_app.put("/tutorial/update-info/{tuto_id}")
 async def actualizar_info_tutorial(tuto_id: int, data: TutorialUpdate):
     conn = None
     try:
         conn = get_db_connection()
         cur = conn.cursor()
-        
-        # Ejecutamos la actualización en la tabla tutoriales
         query = "UPDATE tutoriales SET titulo = %s, descripcion = %s WHERE id = %s"
         cur.execute(query, (data.titulo, data.descripcion, tuto_id))
         
@@ -328,6 +322,4 @@ async def obtener_historial():
     finally:
         if conn: conn.close()
 
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(auth_app, host="0.0.0.0", port=8001)
+# Eliminamos el bloque if __name__ == "__main__" ya que main.py controla el arranque.

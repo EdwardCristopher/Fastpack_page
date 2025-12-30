@@ -1,5 +1,8 @@
-// CONFIGURACIÓN
-const AUTH_API_URL = "http://localhost:8001";
+// CONFIGURACIÓN DINÁMICA - Detecta si estás en tu PC o en la Nube
+const AUTH_API_URL = window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost"
+    ? "http://localhost:8001/api/auth" 
+    : `${window.location.origin}/api/auth`;
+
 const ADMIN_TOKEN_SECRET = "FP2025"; 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -17,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const errorDiv = document.getElementById('errorMessage');
 
         try {
+            // El fetch ahora apunta a la ruta unificada /api/auth/login
             const response = await fetch(`${AUTH_API_URL}/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -47,10 +51,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } catch (error) {
             console.error("Error de conexión:", error);
-            // Alerta de error de conexión mejorada
             Swal.fire({
                 title: 'ERROR DE SISTEMA',
-                text: 'No se pudo conectar con el servidor de autenticación (Puerto 8001).',
+                text: 'No se pudo conectar con el servidor de autenticación centralizado.',
                 icon: 'error',
                 confirmButtonColor: '#0f172a'
             });
@@ -91,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
     btnConfirmRegister?.addEventListener('click', handleRegister);
 });
 
-// 5. FUNCIÓN PARA CREAR USUARIO (CON ESTILO MEJORADO)
+// 5. FUNCIÓN PARA CREAR USUARIO (CON RUTA ACTUALIZADA)
 async function handleRegister() {
     const token = document.getElementById('regToken').value;
     const username = document.getElementById('newUsername').value;
@@ -118,6 +121,7 @@ async function handleRegister() {
     }
 
     try {
+        // Petición a /api/auth/register
         const response = await fetch(`${AUTH_API_URL}/register`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -131,7 +135,6 @@ async function handleRegister() {
         });
 
         if (response.ok) {
-            // ALERTA DE ÉXITO ESTILIZADA
             Swal.fire({
                 title: '¡REGISTRO EXITOSO!',
                 html: `Usuario <b>${username}</b> creado correctamente como <b>${rol}</b>.`,
@@ -154,7 +157,7 @@ async function handleRegister() {
         console.error("Error:", error);
         Swal.fire({
             title: 'ERROR DE SERVIDOR',
-            text: 'Fallo al conectar con auth.py.',
+            text: 'Fallo al conectar con el servicio de autenticación.',
             icon: 'error',
             confirmButtonColor: '#0f172a'
         });
