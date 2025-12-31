@@ -458,7 +458,7 @@ async function iniciarConversion() {
     // Importante: Aquí usamos la ruta /api/converter que definiremos en main.py
    const BASE_CONVERTER_URL = window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost"
     ? "http://127.0.0.1:8001/api/converter" 
-    : "https://fastpackpage-production.up.railway.app/api/converter";
+    : "https://fastpackpage-production-eab8.up.railway.app/api/converter";
 
     try {
         // Ahora el fetch apunta al punto de entrada unificado
